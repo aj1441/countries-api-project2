@@ -1,4 +1,4 @@
-import '/Users/aj/Documents/Dev/countries-api-project/version-2/src/data.json';
+import '/Users/aj/Documents/Dev/countries-api-project2/version-2/src/data.json';
 
 
 export const fetchCountries = async () => {
