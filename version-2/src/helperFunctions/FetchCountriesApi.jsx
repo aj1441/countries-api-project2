@@ -1,6 +1,3 @@
-import '/Users/aj/Documents/Dev/countries-api-project2/version-2/src/data.json';
-
-
 export const fetchCountries = async () => {
     try {
         const response = await fetch('https://restcountries.com/v3.1/all');
