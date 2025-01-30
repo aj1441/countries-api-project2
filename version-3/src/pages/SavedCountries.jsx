@@ -2,32 +2,46 @@
 import { useEffect, useState } from "react";
 import UserForm from "../customComponents/UserForm";
 import { useNavigate } from "react-router-dom";
-// import { Card, Image } from "@chakra-ui/react";
-// import PropTypes from "prop-types";
 import CountryCard from "../customComponents/CountryCard";
-// import Country from "./country";
+import { getDatabase, ref, child, get} from "firebase/database";
+
 
 function SavedCountries({ favorites = [], countries }) {
   const navigate = useNavigate();
   const [user, setUser] = useState("");
   const [showForm, setShowForm] = useState(true); // Show the form by default if no user is found
+  const dbRef = ref(getDatabase());
 
+
+
+
+  
   useEffect(() => {
-    // Check local storage for user data
-    const storedProfile = localStorage.getItem("profile");
-    if (storedProfile) {
-      const profileInfo = JSON.parse(storedProfile);
-      setUser(profileInfo.fullName); // Set the user's name
-      setShowForm(false); // Hide the form if user data exists
-    }
-  }, []);
+    get(child(dbRef, `users/${1}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        console.log(snapshot.val().name);
+        setUser(snapshot.val().name);
+        setShowForm(false);
+      } else {
+        setShowForm(true);
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }, [dbRef]);
+
+  
+  // 
+
+
 
   const handleFormSubmit = (formData) => {
-    // Save form data to local storage and update state
-    localStorage.setItem("profile", JSON.stringify(formData));
     setUser(formData.fullName); // Update user name
     setShowForm(false); // Hide the form after submission
   };
+
 
   const handleHomeClick = () => {
     navigate('/'); // Navigate back to the previous page
@@ -50,7 +64,7 @@ function SavedCountries({ favorites = [], countries }) {
         {showForm ? (
           <UserForm countries={countries} onSubmit={handleFormSubmit} />
         ) : (
-            <CountryCard countries={favorites}/>
+          <CountryCard countries={favorites} />
 
         )}
       </div>
@@ -66,5 +80,3 @@ function SavedCountries({ favorites = [], countries }) {
 export default SavedCountries;
 
 
-
-   

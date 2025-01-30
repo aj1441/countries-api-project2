@@ -1,0 +1,307 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+
+/* // <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 200 to 1000 */
+
+.nunito-sans {
+  font-family: "Nunito Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings: "wdth" 100, "YTLC" 500;
+}
+
+:root {
+  --font-primary: "Nunito Sans";
+  --darkblue: #2b3945;
+  --verydarkblue: #202c37;
+  --verydarkbluetext: #111517;
+  --darkgray: #858585;
+  --verylightgrey: #fafafa;
+  --white: #ffffff;
+  --border-color-light: rgba(195, 181, 181, 0.2);
+  --border-color-dark: rgba(160, 142, 142, 0.2);
+}
+* {
+  font: var(--font-primary);
+}
+body {
+  font-family: var(--font-primary);
+  margin: 0;
+  padding: 0;
+}
+body.light {
+  background-color: var(--verylightgrey);
+  color: var(--verydarkbluetext);
+}
+
+body.light input,
+body.light textarea,
+body.light select,
+body.light #searchContainer,
+body.light button,
+body.light .cardBody,
+body.light .cardHeader {
+  background-color: var(--verylightgrey);
+  color: var(--verydarkbluetext);
+}
+
+body.dark {
+  background-color: var(--verydarkblue);
+  color: var(--white);
+}
+
+body.dark input,
+body.dark textarea,
+body.dark select,
+body.dark .searchContainer,
+body.dark button,
+body.dark .cardBody,
+body.dark .cardHeader {
+  background-color: var(--darkblue);
+  color: var(--white);
+}
+button.theme-toggle {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  background: none;
+  /* border: 1px solid currentColor; */
+  color: inherit;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  transform: translateY(-10px) scale(1.05); /* Moves the card up slightly and scales it */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow for a "pop" effect */
+}
+
+.header {
+  /* font-family: "nunito-sans"; */
+  font-size: 2rem;
+  font-weight: bolder;
+  padding: 1rem;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-content: space-between;
+  h1 {
+    /* font-family: "nunito-sans-large"; */
+    font-weight: bolder;
+  }
+}
+h4 {
+  /* font-family: "nunito-sans-large"; */
+  font-weight: bolder;
+}
+
+.navContainter {
+  grid-column: 3/4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+.linkToSaved {
+  padding: 0.5rem;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+.linkToSaved:hover {
+  transform: translateY(-10px) scale(1.05); /* Moves the card up slightly and scales it */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow for a "pop" effect */
+}
+
+.countrySearch {
+  margin: 2rem;
+  display: flex;
+  flex-direction: row;
+  /* gap: 0.5rem; */
+  justify-content: space-between;
+  select {
+    border: 2px solid rgba(195, 181, 181, 0.2);
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+}
+.searchContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 5px;
+  border: 2px solid rgba(195, 181, 181, 0.2);
+  width: 25%;
+  input {
+    width: 100%;
+    border: none;
+  }
+}
+/* option::selection {
+  color: var(--verydarkbluetext);
+  background-color: var(--verylightgrey);
+} */
+
+.cardContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 3rem;
+  padding: 1rem;
+}
+.cardRoot {
+  border: 1px solid var(--border-color-dark);
+  gap: 0;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+  cursor: pointer; /* Pointer cursor */
+  img {
+    object-fit: cover;
+    /* border-radius: 5px 5px 0px 0px;
+    border-bottom: 1px solid rgba(160, 142, 142, 0.2);
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    all: inherit; */
+  }
+}
+.cardRoot:hover {
+  transform: translateY(-10px) scale(1.05); /* Moves the card up slightly and scales it */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow for a "pop" effect */
+}
+
+.cardHeader {
+  /* font-family: "nunito-sans-large"; */
+  font-size: 1rem;
+  font-weight: bolder;
+  padding: 1rem;
+  border-bottom: none;
+}
+.cardBody {
+  /* font-family: "nunito-sans-regular"; */
+  border-top: none;
+  border-radius: 0px 0px 5px 5px;
+}
+.CountryContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 100vw;
+  height: 100vh;
+}
+.IndividualCountryCard {
+  margin: auto;
+  padding: 1rem;
+  width: 100%;
+}
+/* .CountryDetails {
+  flex: 1;
+  padding: 1rem;
+} */
+
+.BackButton,
+.HomeButton {
+  border-radius: 5px;
+  text-align: center;
+  padding: 0.5rem;
+  margin: 2rem;
+  width: 10%;
+  align-items: center;
+  border: 1px solid rgba(160, 142, 142, 0.2);
+}
+.SaveButton {
+  border-radius: 5px;
+  padding: 1rem;
+  border: 1px solid rgba(160, 142, 142, 0.2);
+}
+
+.BorderCountries {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+  a {
+    padding: 0.5rem;
+    border: 1px solid rgba(160, 142, 142, 0.2);
+    border-radius: 5px;
+  }
+  span {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color-dark);
+  }
+}
+.welcomeMessage {
+  font-size: 1.5rem;
+  margin: auto;
+  max-width: 20%;
+  align-items: center;
+  font-weight: 800;
+  padding: 2.5rem;
+  border-bottom: none;
+}
+.SavedCountriesTitle {
+  font-size: 1.5rem;
+  margin: auto;
+  /* max-width: 20%; */
+  /* align-items: center; */
+  font-weight: 800;
+  padding: 1rem;
+  border-bottom: none;
+}
+
+form {
+  border: 1px solid var(--border-color-dark);
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 40%;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  h2 {
+    align-items: center;
+  }
+  input {
+    border: 1px solid var(--border-color-dark);
+    padding: 0.5rem;
+    width: 100%;
+  }
+  textarea {
+    border: 1px solid var(--border-color-dark);
+    padding: 0.5rem;
+    width: 100%;
+    height: 100%;
+  }
+  h2 {
+    font-family: "nunito-sans-large";
+    font-weight: bolder;
+  }
+  button {
+    border: 1px solid var(--border-color-dark);
+    background-color: var(--verylightgrey);
+    width: 30%;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 2rem;
+
+    /* input {
+      padding: 0.5rem;
+      border: none;
+      border-radius: 5px;
+      align-items: center;
+    } */
+  }
+}
