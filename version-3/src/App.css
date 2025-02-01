@@ -146,10 +146,7 @@ h4 {
     border: none;
   }
 }
-/* option::selection {
-  color: var(--verydarkbluetext);
-  background-color: var(--verylightgrey);
-} */
+
 
 .cardContainer {
   display: grid;
@@ -167,12 +164,6 @@ h4 {
   cursor: pointer; /* Pointer cursor */
   img {
     object-fit: cover;
-    /* border-radius: 5px 5px 0px 0px;
-    border-bottom: 1px solid rgba(160, 142, 142, 0.2);
-    width: 100%;
-    height: auto;
-    overflow: visible;
-    all: inherit; */
   }
 }
 .cardRoot:hover {
@@ -181,14 +172,12 @@ h4 {
 }
 
 .cardHeader {
-  /* font-family: "nunito-sans-large"; */
   font-size: 1rem;
   font-weight: bolder;
   padding: 1rem;
   border-bottom: none;
 }
 .cardBody {
-  /* font-family: "nunito-sans-regular"; */
   border-top: none;
   border-radius: 0px 0px 5px 5px;
 }
@@ -206,10 +195,6 @@ h4 {
   padding: 1rem;
   width: 100%;
 }
-/* .CountryDetails {
-  flex: 1;
-  padding: 1rem;
-} */
 
 .BackButton,
 .HomeButton {
@@ -255,8 +240,7 @@ h4 {
 .SavedCountriesTitle {
   font-size: 1.5rem;
   margin: auto;
-  /* max-width: 20%; */
-  /* align-items: center; */
+
   font-weight: 800;
   padding: 1rem;
   border-bottom: none;
@@ -296,12 +280,5 @@ form {
     border-radius: 5px;
     text-align: center;
     margin-top: 2rem;
-
-    /* input {
-      padding: 0.5rem;
-      border: none;
-      border-radius: 5px;
-      align-items: center;
-    } */
   }
 }

@@ -2,16 +2,14 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "../components/ui/button";
-// import PropTypes from 'prop-types';
 import { Box, Card, HStack, Image, Text } from "@chakra-ui/react";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, update } from "firebase/database";
 
 
 
 
 function Country({ countries, setFavorites }) {
   // Get the country ID from the URL parameters
-  // const { id } = useParams();
   const { countryId } = useParams(); // Get country ID from URL
   // Hook to navigate programmatically
   const navigate = useNavigate();
@@ -22,10 +20,8 @@ function Country({ countries, setFavorites }) {
 
   useEffect(() => {
     if (!countryId) return; //  Prevent errors if countryId is missing
-  
     const db = getDatabase();
     const dbRef = ref(db, `countryCard/${countryId}/clickCount`);
-  
     const unsubscribe = onValue(dbRef, (snapshot) => {
       if (snapshot.exists()) {
         setClickCount(snapshot.val()); //  Update state in real-time
@@ -33,11 +29,9 @@ function Country({ countries, setFavorites }) {
         setClickCount(0); //  Default to 0 if not found
       }
     });
-  
     return () => unsubscribe(); //  Cleanup on unmount
   }, [countryId]);
  
-
   useEffect(() => {
     const fetchBorderCountries = () => {
       if (country && country.borders) {
@@ -70,6 +64,7 @@ function Country({ countries, setFavorites }) {
       return;
     }
     try {
+      const db = getDatabase();
       const existingFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
       // Check if country already exists
@@ -81,13 +76,25 @@ function Country({ countries, setFavorites }) {
       // Add new country to favorites
       const updatedFavorites = [...existingFavorites, country];
 
-      // Save to localStorage
-      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+      // Update Firebase
+      const updates = {};
+      updates['/users/1/favorites'] = updatedFavorites;
+      
+      update(ref(db), updates)
+        .then(() => {
+          // Update localStorage as fallback
+          localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+          
+          // Update UI state
+          setFavorites(updatedFavorites);
+          
+          alert('Country saved to favorites!');
+        })
+        .catch((error) => {
+          console.error('Error saving to Firebase:', error);
+          alert('Failed to save country to favorites');
+        });
 
-      // Update UI state
-      setFavorites(updatedFavorites);
-
-      alert('Country saved to favorites!');
     } catch (error) {
       console.error('Error saving to favorites:', error);
       alert('Failed to save country to favorites');
@@ -140,10 +147,6 @@ function Country({ countries, setFavorites }) {
     </>
   );
 };
-
-
-
-
 
 
 export default Country;

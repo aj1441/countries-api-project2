@@ -12,9 +12,6 @@ function SavedCountries({ favorites = [], countries }) {
   const [showForm, setShowForm] = useState(true); // Show the form by default if no user is found
   const dbRef = ref(getDatabase());
 
-
-
-
   
   useEffect(() => {
     get(child(dbRef, `users/${1}`)).then((snapshot) => {
@@ -33,10 +30,6 @@ function SavedCountries({ favorites = [], countries }) {
   }, [dbRef]);
 
   
-  // 
-
-
-
   const handleFormSubmit = (formData) => {
     setUser(formData.fullName); // Update user name
     setShowForm(false); // Hide the form after submission
@@ -72,10 +65,6 @@ function SavedCountries({ favorites = [], countries }) {
   );
 }
 
-// SavedCountries.propTypes = {
-//   favorites: PropTypes.array,
-//   countries: PropTypes.array.isRequired,
-// };
 
 export default SavedCountries;
 

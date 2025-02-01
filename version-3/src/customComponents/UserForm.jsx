@@ -23,7 +23,6 @@ function UserForm({ countries, onSubmit}) {
         });
       }
 
-    
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prevFormData) => ({ ...prevFormData, [name]: value } ));

@@ -5,8 +5,6 @@ const CountrySearchBar = ({ countries, searchTerm, setSearchTerm, selectedOption
   const regions = [...new Set(countries.map(country => country.region))].filter(Boolean);
     // State to store the search term
 
-
-
   // Handle changes to the search input field
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);

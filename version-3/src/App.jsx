@@ -7,6 +7,7 @@ import Country from './pages/Country';
 import './App.css';
 import { fetchCountries } from './helperFunctions/FetchCountriesApi';
 import { initializeApp } from "firebase/app";
+import { getDatabase, ref, child, get } from "firebase/database";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -24,17 +25,29 @@ const firebaseConfig = {
 };
 
 
-
 function App() {
   // eslint-disable-next-line no-unused-vars
   const app = initializeApp(firebaseConfig);
 
-  // const analytics = getAnalytics(app);
   const [theme, setTheme] = useState('light'); // State to track theme (light/dark)
   const [fetchedCountries, setFetchedCountries] = useState([]);
+
+  const dbRef = ref(getDatabase());
   const [favorites, setFavorites] = useState(() => {
+    // Initially load from localStorage as fallback
     const stored = localStorage.getItem('favorites');
-    return stored ? JSON.parse(stored) : [];
+    const initial = stored ? JSON.parse(stored) : [];
+    
+    // Then try to fetch from Firebase
+    get(child(dbRef, `users/1/favorites`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        setFavorites(snapshot.val());
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+
+    return initial;
   });
 
 
