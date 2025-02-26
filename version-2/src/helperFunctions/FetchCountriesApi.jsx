@@ -10,7 +10,7 @@ export const fetchCountries = async () => {
         console.error('Failed to fetch countries from API:', error);
         // Fallback to local data.json file
         try {
-            const localResponse = await fetch('version-2/src/data.json');
+            const localResponse = await fetch('version-2/public/data.json');
             if (!localResponse.ok) {
                 throw new Error('Network response was not ok');
             }
