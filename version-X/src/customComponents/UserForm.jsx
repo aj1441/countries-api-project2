@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 // import PropTypes from "prop-types";
 import { useState } from "react";
-import { getDatabase, ref, set } from "firebase/database";
+// import { getDatabase, ref, set } from "firebase/database";
+import base from '../config/airtable';
 
 
 function UserForm({ countries, onSubmit}) {
@@ -13,27 +14,49 @@ function UserForm({ countries, onSubmit}) {
         bio: "",
     });
 
-    function writeUserData( name, email, country, bio) {
-        const db = getDatabase();
-        set(ref(db, 'users/' + 1), {
-          name: name,
-          email: email,
-          country: country,
-          bio: bio,
-        });
-      }
+    // function writeUserData( name, email, country, bio) {
+    //     const db = getDatabase();
+    //     set(ref(db, 'users/' + 1), {
+    //       name: name,
+    //       email: email,
+    //       country: country,
+    //       bio: bio,
+    //     });
+    //   }
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prevFormData) => ({ ...prevFormData, [name]: value } ));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault(); // Prevent default form submission
-        writeUserData( formData.fullName, formData.email, formData.country, formData.bio); // Save to firebase
-        localStorage.setItem("profile", JSON.stringify(formData));
-        onSubmit(formData); // Pass form data to parent (if needed)
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await base(import.meta.env.VITE_AIRTABLE_USER_PROFILE_TABLE).create([
+                {
+                    fields: {
+                        full_name: formData.fullName,
+                        email: formData.email,
+                        country: formData.country,
+                        bio: formData.bio
+                    }
+                }
+            ]);
+            
+            // localStorage.setItem("profile", JSON.stringify(formData));
+            onSubmit(formData);
+        } catch (error) {
+            console.error('Error creating user profile:', error);
+            alert('Failed to save profile');
+        }
     };
+
+    // const handleSubmit = (e) => {
+    //     e.preventDefault(); // Prevent default form submission
+    //     writeUserData( formData.fullName, formData.email, formData.country, formData.bio); // Save to firebase
+    //     localStorage.setItem("profile", JSON.stringify(formData));
+    //     onSubmit(formData); // Pass form data to parent (if needed)
+    // };
 
     return (
         <div>

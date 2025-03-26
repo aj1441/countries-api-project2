@@ -1,11 +1,18 @@
 --form data
 CREATE TABLE user_data (
     user_id SERIAL PRIMARY KEY,
-    user_name VARCHAR(50),
-    user_email VARCHAR(255),
-    user_country VARCHAR(50),
-    bio VARCHAR(500)
+    user_name VARCHAR(50) NOT NULL,
+    user_email VARCHAR(255) NOT NULL,
+    user_country VARCHAR(50) NOT NULL,
+    bio VARCHAR(500) NOT NULL
 );
+
+//code to alter table to not allow null values
+ALTER TABLE user_data
+ALTER COLUMN user_name SET NOT NULL,
+ALTER COLUMN user_email SET NOT NULL,
+ALTER COLUMN user_country SET NOT NULL;
+
 
 INSERT INTO user_data (user_name, user_email, user_country, bio) VALUES
 ('John Doe', 'JDOE@GMAIL.COM', 'USA', 'I am a web developer who loves to learn about countries and their cultures'),    
@@ -23,12 +30,16 @@ INSERT INTO saved_countries (country_code) VALUES
 ('CAN'),
 ('MEX');
 
---country count clicks
+--country country clicks
 CREATE TABLE country_clicks (
     click_id SERIAL PRIMARY KEY,
-    country_code VARCHAR(50),
+    country_code VARCHAR(50) UNIQUE,
     country_count INT
 );
+
+--used this to update country clicks
+ALTER TABLE country_clicks
+ADD CONSTRAINT unique_country_code UNIQUE (country_code);
 
 INSERT INTO country_clicks (country_name, country_code, country_count) VALUES
 ('USA', 3),

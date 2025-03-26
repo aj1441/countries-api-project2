@@ -6,49 +6,51 @@ import SavedCountries from './pages/SavedCountries';
 import Country from './pages/Country';
 import './App.css';
 import { fetchCountries } from './helperFunctions/FetchCountriesApi';
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, child, get } from "firebase/database";
+// import { initializeApp } from "firebase/app";
+// import { getDatabase, ref, child, get } from "firebase/database";
+import base from './config/airtable';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+// const firebaseConfig = {
+//   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+//   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+//   databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+//   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+//   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+//   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+//   appId: import.meta.env.VITE_FIREBASE_APP_ID,
+//   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 
 
-};
+// };
 
 
 function App() {
+
   // eslint-disable-next-line no-unused-vars
-  const app = initializeApp(firebaseConfig);
+  // const app = initializeApp(firebaseConfig);
 
   const [theme, setTheme] = useState('light'); // State to track theme (light/dark)
   const [fetchedCountries, setFetchedCountries] = useState([]);
 
-  const dbRef = ref(getDatabase());
-  const [favorites, setFavorites] = useState(() => {
+  // const dbRef = ref(getDatabase());
+  const [favorites, setFavorites] = useState([]); //(() => {
     // Initially load from localStorage as fallback
-    const stored = localStorage.getItem('favorites');
-    const initial = stored ? JSON.parse(stored) : [];
+    // const stored = localStorage.getItem('favorites');
+    // const initial = stored ? JSON.parse(stored) : [];
     
     // Then try to fetch from Firebase
-    get(child(dbRef, `users/1/favorites`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        setFavorites(snapshot.val());
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
+  //   get(child(dbRef, `users/1/favorites`)).then((snapshot) => {
+  //     if (snapshot.exists()) {
+  //       setFavorites(snapshot.val());
+  //     }
+  //   }).catch((error) => {
+  //     console.error(error);
+  //   });
 
-    return initial;
-  });
+  //   return initial;
+  // });
 
 
   // Update the body class whenever the theme changes
@@ -62,6 +64,18 @@ function App() {
       setFetchedCountries(countries);
     };
     getCountries();
+
+      // Fetch favorites from Airtable
+      base('Favorites')
+      .select({ view: 'Grid view' })
+      .firstPage()
+      .then(records => {
+        const favorites = records.map(record => record.fields);
+        setFavorites(favorites);
+      })
+      .catch(error => {
+        console.error('Error fetching favorites from Airtable:', error);
+      });
   }, []);
 
 

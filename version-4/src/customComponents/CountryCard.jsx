@@ -1,72 +1,30 @@
 /* eslint-disable react/prop-types */
 import { Card, Image } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-// import { getDatabase, increment, ref, update } from "firebase/database";
-import base from '../config/airtable';
+import { getDatabase, increment, ref, update } from "firebase/database";
 
 function CountryCard({ countries }) {
   const navigate = useNavigate();
 
-  // const db = getDatabase();
+  const db = getDatabase();
 
-  const updateClickCount = async (countryKey) => {
-    try {
-      // Find existing record
-      const records = await base(import.meta.env.VITE_AIRTABLE_TIMES_CLICKED)
-        .select({
-          filterByFormula: `{country_code} = '${countryKey}'`
-        })
-        .firstPage();
+  // Function to update click count in Firebase
+  const clickCount = (key) => {
+    const updates = {};
+    updates[`countryCard/${key}/clickCount`] = increment(1);
 
-      if (records.length > 0) {
-        // Update existing record
-        await base(import.meta.env.VITE_AIRTABLE_TIMES_CLICKED).update([
-          {
-            id: records[0].id,
-            fields: {
-              click_count: (records[0].fields.click_count || 0) + 1
-            }
-          }
-        ]);
-      } else {
-        // Create new record
-        await base(import.meta.env.VITE_AIRTABLE_TIMES_CLICKED).create([
-          {
-            fields: {
-              country_code: countryKey,
-              click_count: 1
-            }
-          }
-        ]);
-      }
-    } catch (error) {
-      console.error("Airtable update error:", error);
-    }
+    update(ref(db), updates).catch((error) =>
+      console.error("Firebase update error:", error)
+    );
   };
 
-  const handleClick = async (country) => {
-    const countryKey = String(country.cca3);
-    await updateClickCount(countryKey);
-    navigate(`/country/${countryKey}`);
+  const handleClick = (country) => {
+    let countryKey = String(country.cca3);
+
+    clickCount(countryKey); // Update Firebase click count
+
+    navigate(`/country/${countryKey}`); // No need to pass timesClicked
   };
-
-  // // Function to update click count in Firebase
-  // const clickCount = (key) => {
-  //   const updates = {};
-  //   updates[`countryCard/${key}/clickCount`] = increment(1);
-
-  //   update(ref(db), updates).catch((error) =>
-  //     console.error("Firebase update error:", error)
-  //   );
-  // };
-
-  // const handleClick = (country) => {
-  //   let countryKey = String(country.cca3);
-
-  //   clickCount(countryKey); // Update Firebase click count
-
-  //   navigate(`/country/${countryKey}`); // No need to pass timesClicked
-  // };
 
 
 

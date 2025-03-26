@@ -276,3 +276,115 @@ let userArtistProfile = [
     ],
   },
 ];
+
+
+// 
+// CREATE TABLE users (
+//   id SERIAL PRIMARY KEY,
+//   name VARCHAR(255) NOT NULL,
+//   role VARCHAR(255),
+//   spotLightMessage TEXT,
+//   bio TEXT
+// );
+
+// CREATE TABLE demographics (
+//   id SERIAL PRIMARY KEY,
+//   user_id INT REFERENCES users(id) ON DELETE CASCADE,
+//   age INT,
+//   status VARCHAR(50),
+//   location VARCHAR(255),
+//   archetype VARCHAR(255)
+// );
+
+// CREATE TABLE traits (
+//   id SERIAL PRIMARY KEY,
+//   user_id INT REFERENCES users(id) ON DELETE CASCADE,
+//   trait VARCHAR(100) NOT NULL
+// );
+
+// CREATE TABLE personality (
+//   id SERIAL PRIMARY KEY,
+//   user_id INT REFERENCES users(id) ON DELETE CASCADE,
+//   introvertToExtrovert INT CHECK (introvertToExtrovert BETWEEN 0 AND 100),
+//   analyticalToCreative INT CHECK (analyticalToCreative BETWEEN 0 AND 100),
+//   loyalToFickle INT CHECK (loyalToFickle BETWEEN 0 AND 100),
+//   passiveToActive INT CHECK (passiveToActive BETWEEN 0 AND 100)
+// );
+
+// CREATE TABLE goals (
+//   id SERIAL PRIMARY KEY,
+//   user_id INT REFERENCES users(id) ON DELETE CASCADE,
+//   goal TEXT NOT NULL
+// );
+
+// CREATE TABLE motivations (
+//   id SERIAL PRIMARY KEY,
+//   user_id INT REFERENCES users(id) ON DELETE CASCADE,
+//   price INT CHECK (price BETWEEN 0 AND 10),
+//   comfort INT CHECK (comfort BETWEEN 0 AND 10),
+//   convenience INT CHECK (convenience BETWEEN 0 AND 10),
+//   speed INT CHECK (speed BETWEEN 0 AND 10),
+//   loyaltyMiles INT CHECK (loyaltyMiles BETWEEN 0 AND 10)
+// );
+
+// CREATE TABLE frustrations (
+//   id SERIAL PRIMARY KEY,
+//   user_id INT REFERENCES users(id) ON DELETE CASCADE,
+//   frustration TEXT NOT NULL
+// );
+
+// CREATE TABLE favorite_brands (
+//   id SERIAL PRIMARY KEY,
+//   user_id INT REFERENCES users(id) ON DELETE CASCADE,
+//   brand_name VARCHAR(255) NOT NULL,
+//   logo_url TEXT
+// );
+
+// -- Insert a user
+// INSERT INTO users (name, role, spotLightMessage, bio)
+// VALUES ('Jane Doe', 'UI Designer', 
+//         'Jane is a talented UI designer with a passion for creating beautiful and functional designs.',
+//         'Jill is a Regional Director who travels 4-8 times each month for work. She has a specific region in which she travels...');
+
+// -- Get user ID
+// SELECT id FROM users WHERE name = 'Jane Doe';
+
+// -- Insert demographics
+// INSERT INTO demographics (user_id, age, status, location, archetype)
+// VALUES (1, 25, 'Single', 'San Francisco, CA', 'Frequent Flyer');
+
+// -- Insert traits
+// INSERT INTO traits (user_id, trait) VALUES 
+// (1, 'Organized'), 
+// (1, 'Protective'),
+// (1, 'Practical'), 
+// (1, 'Hardworking'), 
+// (1, 'Passionate'), 
+// (1, 'Punctual');
+
+// -- Insert personality
+// INSERT INTO personality (user_id, introvertToExtrovert, analyticalToCreative, loyalToFickle, passiveToActive)
+// VALUES (1, 30, 80, 5, 65);
+
+// -- Insert goals
+// INSERT INTO goals (user_id, goal) VALUES 
+// (1, 'To spend less time booking travel'), 
+// (1, 'To narrow her options quickly');
+
+// -- Insert motivations
+// INSERT INTO motivations (user_id, price, comfort, convenience, speed, loyaltyMiles)
+// VALUES (1, 4, 7, 9, 3, 4);
+
+// -- Insert frustrations
+// INSERT INTO frustrations (user_id, frustration) VALUES 
+// (1, 'Spending hours booking travel'), 
+// (1, 'Lack of organization in travel solutions'), 
+// (1, 'Repeating the same booking process');
+
+// -- Insert favorite brands
+// INSERT INTO favorite_brands (user_id, brand_name, logo_url) VALUES 
+// (1, 'Adidas', '/img/adida.png'),
+// (1, 'Nike', '/img/nike.png'),
+// (1, 'Netflix', '/img/netflix.png'),
+// (1, 'Airbnb', '/img/airbnb.png'),
+// (1, 'Zara', '/img/zara.png');
