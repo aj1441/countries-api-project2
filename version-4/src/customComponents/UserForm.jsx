@@ -1,11 +1,7 @@
 /* eslint-disable react/prop-types */
-// import PropTypes from "prop-types";
 import { useState } from "react";
-import { getDatabase, ref, set } from "firebase/database";
-
 
 function UserForm({ countries, onSubmit}) {
-    
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
@@ -13,27 +9,42 @@ function UserForm({ countries, onSubmit}) {
         bio: "",
     });
 
-    function writeUserData( name, email, country, bio) {
-        const db = getDatabase();
-        set(ref(db, 'users/' + 1), {
-          name: name,
-          email: email,
-          country: country,
-          bio: bio,
-        });
-      }
-
+// handle input changes
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prevFormData) => ({ ...prevFormData, [name]: value } ));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault(); // Prevent default form submission
-        writeUserData( formData.fullName, formData.email, formData.country, formData.bio); // Save to firebase
-        localStorage.setItem("profile", JSON.stringify(formData));
-        onSubmit(formData); // Pass form data to parent (if needed)
-    };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+
+    try {
+      // Send the form data to the server to save the user
+      const response = await fetch("http://localhost:3000/add-user-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_name: formData.fullName,
+          user_email: formData.email,
+          user_country: formData.country,
+          bio: formData.bio,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save user data");
+      }
+
+      // Notify the parent component (SavedCountries.jsx) about the successful submission
+      onSubmit(formData);
+    } catch (error) {
+      console.error("Error saving user data:", error);
+    }
+  };
 
     return (
         <div>
