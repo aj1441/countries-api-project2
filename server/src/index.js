@@ -4,7 +4,17 @@ import express from "express";
 import pg from "pg";
 import cors from "cors"; // Importing CORS to handle cross-origin requests  
 const { Client } = pg;
-import config from "./config.js";
+
+let config = {
+  user: process.env.USER,
+  host: process.env.HOST,
+  database: process.env.DATABASE,
+  password: process.env.PASSWORD,
+  port: process.env.DATABASE_PORT,
+  ssl: true
+}
+
+
 
 const app = express();
 const port = 3000;
