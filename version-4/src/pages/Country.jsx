@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "../components/ui/button";
 import { Box, Card, HStack, Image, Text } from "@chakra-ui/react";
-import { getDatabase, ref, onValue, update } from "firebase/database";
 
 
 
@@ -18,20 +17,28 @@ function Country({ countries, setFavorites }) {
   const [clickCount, setClickCount] = useState(0); // Only store Firebase data
 
 
+  // Fetch click count from the local server
   useEffect(() => {
-    if (!countryId) return; //  Prevent errors if countryId is missing
-    const db = getDatabase();
-    const dbRef = ref(db, `countryCard/${countryId}/clickCount`);
-    const unsubscribe = onValue(dbRef, (snapshot) => {
-      if (snapshot.exists()) {
-        setClickCount(snapshot.val()); //  Update state in real-time
-      } else {
-        setClickCount(0); //  Default to 0 if not found
+    if (!countryId) return;
+
+    const fetchClickCount = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/country-click/${countryId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setClickCount(data.country_count || 0);
+        } else {
+          console.error('Failed to fetch click count');
+        }
+      } catch (error) {
+        console.error('Error fetching click count:', error);
       }
-    });
-    return () => unsubscribe(); //  Cleanup on unmount
+    };
+
+    fetchClickCount();
   }, [countryId]);
  
+  //fetch border countries
   useEffect(() => {
     const fetchBorderCountries = () => {
       if (country && country.borders) {
@@ -57,49 +64,40 @@ function Country({ countries, setFavorites }) {
     navigate(-1); // Navigate back to the previous page
   };
 
-  const handleSaveClick = () => {
-    const storedProfile = localStorage.getItem('profile');
-    if (!storedProfile) {
-      alert('You are not logged in. Please log in on the Saved Countries page to save your countries.');
-      return;
-    }
+  const handleSaveClick = async () => {
+//eventually i want a function here to check to see if the user is logged in if not it should prompt to sign in similar to the firebase code
+// const storedProfile = localStorage.getItem('profile');
+// if (!storedProfile) {
+//   alert('You are not logged in. Please log in on the Saved Countries page to save your countries.');
+//   return;
+// }
+
+
     try {
-      const db = getDatabase();
-      const existingFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      const response = await fetch('http://localhost:3000/add-user-saved-countries', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: 1, // Replace with the actual user ID from your app's authentication system
+          country_code: country.cca3,
+        }),
+      });
 
-      // Check if country already exists
-      if (existingFavorites.some(fav => fav.cca3 === country.cca3)) {
-        alert('This country is already in your favorites!');
-        return;
+      if (response.ok) {
+        alert('Country saved to favorites!');
+      } else {
+        alert('Failed to save country to favorites');
       }
-
-      // Add new country to favorites
-      const updatedFavorites = [...existingFavorites, country];
-
-      // Update Firebase
-      const updates = {};
-      updates['/users/1/favorites'] = updatedFavorites;
-      
-      update(ref(db), updates)
-        .then(() => {
-          // Update localStorage as fallback
-          localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-          
-          // Update UI state
-          setFavorites(updatedFavorites);
-          
-          alert('Country saved to favorites!');
-        })
-        .catch((error) => {
-          console.error('Error saving to Firebase:', error);
-          alert('Failed to save country to favorites');
-        });
-
     } catch (error) {
-      console.error('Error saving to favorites:', error);
+      console.error('Error saving country:', error);
       alert('Failed to save country to favorites');
     }
   };
+
+
+      
 
 
   return (

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, Image } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +8,34 @@ function CountryCard({ countries }) {
   const navigate = useNavigate();
 
   // const db = getDatabase();
+
+
+//fetch click counts for countries on initial render
+useEffect(() => {
+  const fetchClickCounts = async () => {
+    console.log("fetching click counts for countries..."); // Log to confirm this runs
+    const counts = {};
+
+    await Promise.all(
+      countries.map(async (country) => {
+        try {
+          const response = await fetch(`http://localhost:3000/country-click/${country.cca3}`);
+          if (response.ok) {
+            const data = await response.json();
+            console.log('fetched data', data); // Log the fetched data for debugging
+            counts[country.cca3] = data.country_count;
+          }
+        } catch (error) {
+          console.error(`Failed to fetch click count for ${country.cca3}:`, error);
+        }
+      })
+    );
+
+    setClickCounts(counts);
+  };
+
+  fetchClickCounts();
+}, [countries]);
 
 
 
