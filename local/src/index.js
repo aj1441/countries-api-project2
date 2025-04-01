@@ -132,20 +132,15 @@ async function getUserSavedCountries(user_id) {
 // I need an end point to get & post country_clidks, post user data, get user data/:name, get & post user_saved_countries
 // post user data
 app.post("/add-user-data", async (req, res) => {
-    const { user_name, user_email, user_country, bio } = req.body;
-  
-    try {
-      await client.query(
-        `INSERT INTO user_data (user_name, user_email, user_country, bio) 
-         VALUES ($1, $2, $3, $4)`,
-        [user_name, user_email, user_country, bio]
-      );
-      res.send("User data added successfully");
-    } catch (error) {
-      console.error("Error adding user data:", error);
-      res.status(500).json({ error: "Failed to add user data" });
-    }
-  });
+  const { user_name, user_email, user_country, bio } = req.body;
+  try {
+    await addUserData(req.body);
+    res.send("User data added successfully");
+  } catch (error) {
+    console.error("Error adding user data:", error);
+    res.status(500).json({ error: "Failed to add user data" });
+  }
+});
 
 // get user name from user data
 app.get("/get-user-data/:user_id", async (req, res) => {
