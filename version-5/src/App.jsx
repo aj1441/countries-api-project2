@@ -25,7 +25,7 @@ function App() {
     const fetchSavedCountries = async () => {
       try {
         const userId = 1; // Replace with dynamic user ID if needed
-        const response = await fetch(`http://localhost:3000/get-user-saved-countries/${userId}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/get-user-saved-countries/${userId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch saved countries");
         }

@@ -22,7 +22,7 @@ function UserForm({ countries, onSubmit}) {
 
     try {
       // Send the form data to the server to save the user
-      const response = await fetch("http://localhost:3000/add-user-data", {
+      const response = await fetch("${import.meta.env.VITE_API_URL}/add-user-data", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

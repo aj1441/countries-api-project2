@@ -23,7 +23,7 @@ function Country({ countries, setFavorites }) {
 
     const fetchClickCount = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/country-click/${countryId}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/country-click/${countryId}`);
         if (response.ok) {
           const data = await response.json();
           setClickCount(data.country_count || 0);
@@ -74,7 +74,7 @@ function Country({ countries, setFavorites }) {
 
 
     try {
-      const response = await fetch('http://localhost:3000/add-user-saved-countries', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/add-user-saved-countries', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

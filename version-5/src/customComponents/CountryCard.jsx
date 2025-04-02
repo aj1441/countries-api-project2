@@ -19,7 +19,7 @@ useEffect(() => {
     await Promise.all(
       countries.map(async (country) => {
         try {
-          const response = await fetch(`http://localhost:3000/country-click/${country.cca3}`);
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/country-click/${country.cca3}`);
           if (response.ok) {
             const data = await response.json();
             console.log('fetched data', data); // Log the fetched data for debugging
@@ -45,7 +45,7 @@ useEffect(() => {
 
     try {
       // Send a POST request to update the click count
-      const response = await fetch(`http://localhost:3000/country-click/${countryKey}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/country-click/${countryKey}`, {
         method: "POST",
       });
 

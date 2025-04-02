@@ -128,13 +128,8 @@ async function getUserSavedCountries(user_id) {
 // post user data
 app.post("/add-user-data", async (req, res) => {
     const { user_name, user_email, user_country, bio } = req.body;
-  
     try {
-      await client.query(
-        `INSERT INTO user_data (user_name, user_email, user_country, bio) 
-         VALUES ($1, $2, $3, $4)`,
-        [user_name, user_email, user_country, bio]
-      );
+      await addUserData(req.body);
       res.send("User data added successfully");
     } catch (error) {
       console.error("Error adding user data:", error);
@@ -168,6 +163,7 @@ app.post("/add-user-saved-countries", async (req, res) => {
 
 //get user_saved_countries
 app.get("/get-user-saved-countries/:user_id", async (req, res) => {
+  console.log(`Request received for user ID: ${req.params.user_id}`); // Debug log to check the user_id being requested
   let userSavedCountries = await getUserSavedCountries(req.params.user_id);
   //   let JSONuserSavedCountries = JSON.stringify(userSavedCountries);
   res.json(userSavedCountries);
