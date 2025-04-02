@@ -68,6 +68,20 @@ async function getUserData(user_id) {
   return result.rows;
 }
 
+//get country click count
+async function getCountryClickCount(country_code) {
+  const client = new Client(config);
+  await client.connect();
+
+  const result = await client.query(
+    `SELECT * FROM country_clicks WHERE country_code = $1`,
+    [country_code]
+  );
+
+  await client.end();
+  return result.rows.length > 0 ? result.rows[0].country_count : 0;
+}
+
 //helper function to check if country code exists in the database, if it does, increment the country_count by 1, if it doesn't, add the country code to the database with a country_count of 1
 async function addCountryClick(country_code) {
   const client = new Client(config); // Creating our database Client with our config values
@@ -86,7 +100,6 @@ async function addCountryClick(country_code) {
   // Return the updated country_count
   return result.rows[0].country_count;
 }
-
 //helper functions add saved countries per user id, checking first if the spcific userid and country_code already exsists. if it does I want to send a message back to the front about user has already saved this country. if it does not exist for that user id I want to add the country to the user_saved_countries table with the current user id.
 async function addUserSavedCountries(user_id, country_code) {
   const client = new Client(config); // Creating our database Client with our config values
@@ -143,6 +156,16 @@ app.get("/get-user-data/:user_id", async (req, res) => {
   res.json(userData); // this is the same as the above two lines??? I will tesst it.
 });
 
+//get country clicks
+app.get("/country-click/:country_code", async (req, res) => {
+  try {
+    const count = await getCountryClickCount(req.params.country_code);
+    res.json({ country_count: count });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 //adding and updateing country_clicks
 app.post("/country-click/:country_code", async (req, res) => {
   const countryClicks = await addCountryClick(req.params.country_code);
@@ -153,6 +176,7 @@ app.post("/country-click/:country_code", async (req, res) => {
   });
   //   res.json({ country_code, country_count: countryClicks });
 });
+
 
 //post user_saved_countries
 app.post("/add-user-saved-countries", async (req, res) => {
