@@ -31,8 +31,9 @@ function App() {
         }
         const data = await response.json();
         console.log("Fetched favorites:", data);
+        setFavorites(data.map(item => item.country_code));
 
-        setFavorites(data);
+        // setFavorites(data);
       } catch (error) {
         console.error("Error fetching saved countries:", error);
       }
