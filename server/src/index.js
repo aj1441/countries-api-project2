@@ -80,18 +80,18 @@ async function getUserData(user_id) {
 }
 
 //get country click count
-// async function getCountryClickCount(country_code) {
-//   const client = new Client(config);
-//   await client.connect();
+async function getCountryClickCount(country_code) {
+  const client = new Client(config);
+  await client.connect();
 
-//   const result = await client.query(
-//     `SELECT * FROM country_clicks WHERE country_code = $1`,
-//     [country_code]
-//   );
+  const result = await client.query(
+    `SELECT * FROM country_clicks WHERE country_code = $1`,
+    [country_code]
+  );
 
-//   await client.end();
-//   return result.rows.length > 0 ? result.rows[0].country_count : 0;
-// }
+  await client.end();
+  return result.rows.length > 0 ? result.rows[0].country_count : 0;
+}
 
 //helper function to get all country clicks
 async function getAllCountryClickCounts() {
@@ -189,14 +189,14 @@ app.get("/get-user-data/:user_id", async (req, res) => {
 });
 
 //get country clicks
-// app.get("/country-click/:country_code", async (req, res) => {
-//   try {
-//     const count = await getCountryClickCount(req.params.country_code);
-//     res.json({ country_count: count });
-//   } catch (error) {
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
+app.get("/country-click/:country_code", async (req, res) => {
+  try {
+    const count = await getCountryClickCount(req.params.country_code);
+    res.json({ country_count: count });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 //get all country clicks
 app.get("/country-clicks", async (req, res) => {
