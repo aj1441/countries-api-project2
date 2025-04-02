@@ -21,7 +21,7 @@ function SavedCountries({ userId = 1, favorites = [], countries }) {
           throw new Error("Failed to fetch user data");
         }
         const userData = await response.json();
-
+console.log("userData:", userData);
         if (userData.length > 0) {
           setUser(userData[0].user_name);
           // setShowForm(false);
