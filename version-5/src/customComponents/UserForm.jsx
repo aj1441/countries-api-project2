@@ -20,6 +20,8 @@ function UserForm({ countries, onSubmit}) {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
 
+
+    
     try {
       // Send the form data to the server to save the user
       const response = await fetch("${import.meta.env.VITE_API_URL}/add-user-data", {

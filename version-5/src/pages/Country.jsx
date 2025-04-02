@@ -74,7 +74,7 @@ function Country({ countries, setFavorites }) {
 
 
     try {
-      const response = await fetch('${import.meta.env.VITE_API_URL}/add-user-saved-countries', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/add-user-saved-countries`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

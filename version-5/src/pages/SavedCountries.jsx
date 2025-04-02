@@ -8,7 +8,7 @@ import CountryCard from "../customComponents/CountryCard";
 function SavedCountries({ userId = 1, favorites = [], countries }) {
   const navigate = useNavigate();
   const [user, setUser] = useState("");
-  const [showForm, setShowForm] = useState(true); // Show the form by default if no user is found
+  // const [showForm, setShowForm] = useState(true); // Show the form by default if no user is found
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +16,6 @@ function SavedCountries({ userId = 1, favorites = [], countries }) {
     const fetchUserData = async () => {
       try {
         setLoading(true);
-        let userId = 1;
         const response = await fetch(`${import.meta.env.VITE_API_URL}/get-user-data/${userId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch user data");
@@ -25,9 +24,9 @@ function SavedCountries({ userId = 1, favorites = [], countries }) {
 
         if (userData.length > 0) {
           setUser(userData[0].user_name);
-          setShowForm(true);
+          // setShowForm(false);
         } else {
-          setShowForm(true);
+          // setShowForm(true);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -39,12 +38,13 @@ function SavedCountries({ userId = 1, favorites = [], countries }) {
     };
 
     fetchUserData();
-  }, [userId]);
+  }, [userId]); // Only run once when the component mounts
+  // Ensure userId is passed correctly to the fetchUserData function
 
 
   const handleFormSubmit = (formData) => {
     setUser(formData.fullName); // Update user name
-    setShowForm(false); // Hide the form after submission
+    //setShowForm(false); // Hide the form after submission
   };
 
 
@@ -55,7 +55,7 @@ function SavedCountries({ userId = 1, favorites = [], countries }) {
   const favoriteCountryObjects = favorites.map(favCode =>
     countries.find(c => c.cca3 === favCode)
   ).filter(Boolean);
-  
+
 
   return (
     <>
@@ -77,7 +77,12 @@ function SavedCountries({ userId = 1, favorites = [], countries }) {
           <div>
             <h1 className="SavedCountriesTitle">My Saved Countries</h1>
             <UserForm countries={countries} onSubmit={handleFormSubmit} />
-            <CountryCard countries={favoriteCountryObjects} />
+            {favoriteCountryObjects.length > 0 ? (
+              <CountryCard countries={favoriteCountryObjects} />
+            ) : (
+              <p>You haven't saved any countries yet.</p>
+            )}
+
 
             {/* {showForm ? (
               <UserForm countries={countries} onSubmit={handleFormSubmit} />

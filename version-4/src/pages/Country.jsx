@@ -74,7 +74,7 @@ function Country({ countries, setFavorites }) {
 
 
     try {
-      const response = await fetch('http://localhost:3000/add-user-saved-countries', {
+      const response = await fetch(`http://localhost:3000/add-user-saved-countries`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
