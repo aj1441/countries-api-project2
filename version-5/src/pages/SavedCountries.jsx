@@ -52,6 +52,11 @@ function SavedCountries({ userId = 1, favorites = [], countries }) {
     navigate('/'); // Navigate back to the previous page
   };
 
+  const favoriteCountryObjects = favorites.map(favCode =>
+    countries.find(c => c.cca3 === favCode)
+  ).filter(Boolean);
+  
+
   return (
     <>
       <div>
@@ -72,7 +77,7 @@ function SavedCountries({ userId = 1, favorites = [], countries }) {
           <div>
             <h1 className="SavedCountriesTitle">My Saved Countries</h1>
             <UserForm countries={countries} onSubmit={handleFormSubmit} />
-            <CountryCard countries={favorites} />
+            <CountryCard countries={favoriteCountryObjects} />
 
             {/* {showForm ? (
               <UserForm countries={countries} onSubmit={handleFormSubmit} />
