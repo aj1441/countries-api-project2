@@ -30,6 +30,8 @@ function App() {
           throw new Error("Failed to fetch saved countries");
         }
         const data = await response.json();
+        console.log("Fetched favorites:", data);
+
         setFavorites(data);
       } catch (error) {
         console.error("Error fetching saved countries:", error);
@@ -39,22 +41,6 @@ function App() {
     fetchSavedCountries();
   }, []);
     
-     // Initially load from localStorage as fallback
-    // const stored = localStorage.getItem('favorites');
-    // const initial = stored ? JSON.parse(stored) : [];
-    
-  //   // Then try to fetch from Firebase
-  //   get(child(dbRef, `users/1/favorites`)).then((snapshot) => {
-  //     if (snapshot.exists()) {
-  //       setFavorites(snapshot.val());
-  //     }
-  //   }).catch((error) => {
-  //     console.error(error);
-  //   });
-
-  //   return initial;
-  // });
-
 
   // Update the body class whenever the theme changes
   useEffect(() => {
