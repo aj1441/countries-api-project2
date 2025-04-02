@@ -71,12 +71,15 @@ function SavedCountries({ userId = 1, favorites = [], countries }) {
           )}
           <div>
             <h1 className="SavedCountriesTitle">My Saved Countries</h1>
-            {showForm ? (
+            <UserForm countries={countries} onSubmit={handleFormSubmit} />
+            <CountryCard countries={favorites} />
+
+            {/* {showForm ? (
               <UserForm countries={countries} onSubmit={handleFormSubmit} />
             ) : (
               <CountryCard countries={favorites} />
 
-            )}
+            )} */}
           </div>
         </>
       )}
