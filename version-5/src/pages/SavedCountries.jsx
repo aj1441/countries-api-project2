@@ -16,6 +16,7 @@ function SavedCountries({ userId = 1, favorites = [], countries }) {
     const fetchUserData = async () => {
       try {
         setLoading(true);
+        let userId = 1;
         const response = await fetch(`${import.meta.env.VITE_API_URL}/get-user-data/${userId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch user data");
@@ -24,7 +25,7 @@ function SavedCountries({ userId = 1, favorites = [], countries }) {
 
         if (userData.length > 0) {
           setUser(userData[0].user_name);
-          setShowForm(false);
+          setShowForm(true);
         } else {
           setShowForm(true);
         }

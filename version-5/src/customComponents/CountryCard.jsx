@@ -9,33 +9,48 @@ function CountryCard({ countries }) {
 
   // const db = getDatabase();
 
+  //fetch click counts for countries on initial render with one api call
+  useEffect(() => {
+    const fetchClickCounts = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/country-clicks`);
+        const data = await response.json();
+        setClickCounts(data);
+      } catch (error) {
+        console.error("Failed to fetch click counts:", error);
+      }
+    };
+  
+    fetchClickCounts();
+  }, []);
+  
 
 //fetch click counts for countries on initial render
-useEffect(() => {
-  const fetchClickCounts = async () => {
-    console.log("fetching click counts for countries..."); // Log to confirm this runs
-    const counts = {};
+// useEffect(() => {
+//   const fetchClickCounts = async () => {
+//     console.log("fetching click counts for countries..."); // Log to confirm this runs
+//     const counts = {};
 
-    await Promise.all(
-      countries.map(async (country) => {
-        try {
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/country-click/${country.cca3}`);
-          if (response.ok) {
-            const data = await response.json();
-            console.log('fetched data', data); // Log the fetched data for debugging
-            counts[country.cca3] = data.country_count;
-          }
-        } catch (error) {
-          console.error(`Failed to fetch click count for ${country.cca3}:`, error);
-        }
-      })
-    );
+//     await Promise.all(
+//       countries.map(async (country) => {
+//         try {
+//           const response = await fetch(`${import.meta.env.VITE_API_URL}/country-click/${country.cca3}`);
+//           if (response.ok) {
+//             const data = await response.json();
+//             console.log('fetched data', data); // Log the fetched data for debugging
+//             counts[country.cca3] = data.country_count;
+//           }
+//         } catch (error) {
+//           console.error(`Failed to fetch click count for ${country.cca3}:`, error);
+//         }
+//       })
+//     );
 
-    setClickCounts(counts);
-  };
+//     setClickCounts(counts);
+//   };
 
-  fetchClickCounts();
-}, [countries]);
+//   fetchClickCounts();
+// }, [countries]);
 
 
 

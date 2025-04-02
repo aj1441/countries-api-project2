@@ -69,18 +69,39 @@ async function getUserData(user_id) {
 }
 
 //get country click count
-async function getCountryClickCount(country_code) {
+// async function getCountryClickCount(country_code) {
+//   const client = new Client(config);
+//   await client.connect();
+
+//   const result = await client.query(
+//     `SELECT * FROM country_clicks WHERE country_code = $1`,
+//     [country_code]
+//   );
+
+//   await client.end();
+//   return result.rows.length > 0 ? result.rows[0].country_count : 0;
+// }
+
+//helper function to get all country clicks
+async function getAllCountryClickCounts() {
   const client = new Client(config);
   await client.connect();
 
   const result = await client.query(
-    `SELECT * FROM country_clicks WHERE country_code = $1`,
-    [country_code]
+    `SELECT country_code, country_count FROM country_clicks`
   );
 
   await client.end();
-  return result.rows.length > 0 ? result.rows[0].country_count : 0;
+
+  // Convert array of rows to an object map
+  const counts = {};
+  result.rows.forEach(row => {
+    counts[row.country_code] = row.country_count;
+  });
+
+  return counts;
 }
+
 
 //helper function to check if country code exists in the database, if it does, increment the country_count by 1, if it doesn't, add the country code to the database with a country_count of 1
 async function addCountryClick(country_code) {
@@ -157,14 +178,26 @@ app.get("/get-user-data/:user_id", async (req, res) => {
 });
 
 //get country clicks
-app.get("/country-click/:country_code", async (req, res) => {
+// app.get("/country-click/:country_code", async (req, res) => {
+//   try {
+//     const count = await getCountryClickCount(req.params.country_code);
+//     res.json({ country_count: count });
+//   } catch (error) {
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
+//get all country clicks
+app.get("/country-clicks", async (req, res) => {
   try {
-    const count = await getCountryClickCount(req.params.country_code);
-    res.json({ country_count: count });
+    const allCounts = await getAllCountryClickCounts();
+    res.json(allCounts);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error fetching all country click counts:", error);
+    res.status(500).json({ error: "Failed to fetch click counts" });
   }
 });
+
 
 //adding and updateing country_clicks
 app.post("/country-click/:country_code", async (req, res) => {
