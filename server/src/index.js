@@ -18,20 +18,20 @@ const app = express();
 const port = 3000;
 const allowedOrigins = ['https://countriesapiversion5.netlify.app'];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('CORS not allowed for this origin'));
-    }
-  }
-}));
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('CORS not allowed for this origin'));
+//     }
+//   }
+// }));
 
 
 
 //Enable CORS in your Express app
-//app.use(cors()); // This will allow all origins. You can also specify options to restrict it to certain domains if needed.  
+app.use(cors()); // This will allow all origins. You can also specify options to restrict it to certain domains if needed.  
 
 // app.use(cors({
 //   origin: 'http://localhost:5173',

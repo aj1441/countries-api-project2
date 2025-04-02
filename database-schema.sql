@@ -25,10 +25,10 @@ INSERT INTO user_data (user_name, user_email, user_country, bio) VALUES
 --     country_code VARCHAR(50),
 -- );
 
-INSERT INTO saved_countries (country_code) VALUES
-('USA'),
-('CAN'),
-('MEX');
+-- INSERT INTO saved_countries (country_code) VALUES
+-- ('USA'),
+-- ('CAN'),
+-- ('MEX');
 
 --country country clicks
 CREATE TABLE country_clicks (
